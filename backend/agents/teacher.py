@@ -59,13 +59,15 @@ TOOLS = [
 
 
 
-async def teacher_respond(topic:str, student_level:str, conversation_history:list[dict], is_opening:bool = False) -> str:
+async def teacher_respond(topic:str, student_level:str, conversation_history:list[dict], is_opening:bool = False, topic_hint: str = "") -> str:
+    hint_text = f" Orchestrator hint: {topic_hint}" if topic_hint else ""
     if is_opening:
         user_message = ( f"Start teaching a student about {topic} at a {student_level} level."
                         "Open witth a interesting hook and end with your first question to the student.")
     else:
-        user_message = ( f"Continue teaching the student about {topic} at a {student_level} level."
-                        "Respond to what the student just said and move the lesson forward.")
+        user_message = (f""" Continue teaching the student about {topic} at a {student_level} level."
+                        "Respond to what the student just said and move the lesson forward.{hint_text}
+                        """)
         
     messages = [
         *conversation_history,

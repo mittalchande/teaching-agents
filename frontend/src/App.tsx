@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import ReactMarkdown from "react-markdown";
 
@@ -19,10 +18,17 @@ interface AgentMessage {
   content: string;
 }
 
+interface OrchestratorDecision {
+  turn: number;
+  decision: string;
+  hint: string;
+}
+
 interface ConversationResponse {
   messages: AgentMessage[];
   audio_clips: string[];
   evaluation: string;
+  orchestrator_decisions: OrchestratorDecision[];
 }
 
 function b64ToAudio(b64: string): HTMLAudioElement {
@@ -57,6 +63,9 @@ function App() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [evaluation, setEvaluation] = useState("");
   const [withAudio, setWithAudio] = useState(false);
+  const [orchestratorDecisions, setOrchestratorDecisions] = useState<
+    OrchestratorDecision[]
+  >([]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -92,6 +101,7 @@ function App() {
       const data: ConversationResponse = await res.json();
       setMessages(data.messages);
       setEvaluation(data.evaluation);
+      setOrchestratorDecisions(data.orchestrator_decisions);
 
       // Play audio after messages are shown and if withAudio is true
       if (withAudio && data.audio_clips.length > 0) {
@@ -212,38 +222,70 @@ function App() {
       <section className="flex-1 overflow-y-auto px-8 py-10 custom-scrollbar scroll-smooth">
         <div className="max-w-2xl mx-auto space-y-8">
           {messages.length === 0 && (
-            <div className="h-full flex items-center justify-center pt-20">
-              <p className="text-indigo-300/40 text-[10px] font-black uppercase tracking-[0.4em] animate-pulse">
-                {loading ? "Processing Stream" : "Awaiting Simulation"}
-              </p>
+            <div className="h-full flex flex-col items-center justify-center pt-20 gap-4">
+              {loading ? (
+                <>
+                  {/* Spinner */}
+                  <div className="w-8 h-8 rounded-full border-2 border-indigo-300/20 border-t-indigo-400 animate-spin" />
+                  <p className="text-indigo-300/60 text-xs uppercase tracking-widest">
+                    Generating conversation...
+                  </p>
+                </>
+              ) : (
+                <p className="text-indigo-300/40 text-[10px] font-black uppercase tracking-[0.4em]">
+                  Awaiting Simulation
+                </p>
+              )}
             </div>
           )}
-          {messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`flex items-start gap-4 ${msg.role === "student" ? "flex-row-reverse" : ""}`}
-            >
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 shadow-lg ${
-                  msg.role === "teacher" ? "bg-blue-500" : "bg-gray-600"
-                }`}
-              >
-                {msg.role === "teacher" ? "T" : "S"}
-              </div>
-              <div
-                className={`max-w-[80%] p-4 rounded-2xl text-sm shadow-md ${
-                  msg.role === "teacher"
-                    ? "bg-blue-100 text-blue-900 rounded-tl-none"
-                    : "bg-gray-100 text-gray-900 rounded-tr-none"
-                }`}
-              >
-                <p className="font-black text-[9px] mb-1 uppercase tracking-widest opacity-50">
-                  {msg.role}
-                </p>
-                <p className="leading-relaxed">{msg.content}</p>
-              </div>
-            </div>
-          ))}
+          {(() => {
+            let turnCounter = 0;
+            return messages.map((msg, i) => {
+              if (msg.role === "student") turnCounter++;
+              const decision =
+                msg.role === "student"
+                  ? orchestratorDecisions.find((d) => d.turn === turnCounter)
+                  : null;
+
+              return (
+                <div key={i}>
+                  {/* existing message bubble */}
+                  <div
+                    className={`flex items-start gap-4 ${msg.role === "student" ? "flex-row-reverse" : ""}`}
+                  >
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 shadow-lg ${
+                        msg.role === "teacher" ? "bg-blue-500" : "bg-gray-600"
+                      }`}
+                    >
+                      {msg.role === "teacher" ? "T" : "S"}
+                    </div>
+                    <div
+                      className={`max-w-[80%] p-4 rounded-2xl text-sm shadow-md ${
+                        msg.role === "teacher"
+                          ? "bg-blue-100 text-blue-900 rounded-tl-none"
+                          : "bg-gray-100 text-gray-900 rounded-tr-none"
+                      }`}
+                    >
+                      <p className="font-black text-[9px] mb-1 uppercase tracking-widest opacity-50">
+                        {msg.role}
+                      </p>
+                      <p className="leading-relaxed">{msg.content}</p>
+                    </div>
+                  </div>
+
+                  {/* orchestrator badge after student message */}
+                  {decision && (
+                    <div className="flex justify-center my-2">
+                      <div className="text-xs px-3 py-1 rounded-full bg-white/10 text-white/60">
+                        🎯 {decision.decision} — {decision.hint}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            });
+          })()}
           <div ref={bottomRef} />
         </div>
       </section>
