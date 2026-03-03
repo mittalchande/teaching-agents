@@ -2,8 +2,8 @@
 
 <div align="center">
   <h3>📺 Project Demo</h3>
-  <a href="https://www.loom.com/share/faf125a77081484494bb36ff473b896a">
-    <img src="https://cdn.loom.com/sessions/thumbnails/faf125a77081484494bb36ff473b896a-e896c8ff6b273fe8-full-play.gif" alt="Multi-Agent Teaching Studio Demo" style="width:100%; max-width:600px; border-radius: 10px;">
+  <a href="https://www.loom.com/share/252fb8592b394c068bca01150daf6825">
+    <img src="https://cdn.loom.com/sessions/thumbnails/252fb8592b394c068bca01150daf6825-d041fe2fbb2e00c6-full-play.gif" alt="Multi-Agent Teaching Studio Demo" style="width:100%; max-width:600px; border-radius: 10px;">
   </a>
   <p><i>Click the image above to watch the full demo on Loom</i></p>
 </div>
