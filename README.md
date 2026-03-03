@@ -27,7 +27,7 @@ Backend: Python, FastAPI.
 
 AI Engine: OpenAI GPT-4o-mini / Anthropic.
 
-Agent Tools: Wikipedia API, Custom Web Search Service.
+Agent Tools: Wikipedia API, DuckDuckGo Search.
 
 Frontend: TypeScript, React, Vite, Tailwind CSS, shadcn/ui.
 
