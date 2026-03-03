@@ -1,5 +1,12 @@
 ## Multi-Agent Teaching Studio
-![](./demo.png)
+
+<div align="center">
+  <h3>📺 Project Demo</h3>
+  <a href="https://www.loom.com/share/faf125a77081484494bb36ff473b896a">
+    <img src="https://cdn.loom.com/sessions/thumbnails/faf125a77081484494bb36ff473b896a-e896c8ff6b273fe8-full-play.gif" alt="Multi-Agent Teaching Studio Demo" style="width:100%; max-width:600px; border-radius: 10px;">
+  </a>
+  <p><i>Click the image above to watch the full demo on Loom</i></p>
+</div>
 
 A sophisticated educational platform powered by Agentic Tool Use and Multi-Agent Orchestration. This studio simulates a classroom environment where specialized AI agents collaborate to provide personalized learning experiences.
 
