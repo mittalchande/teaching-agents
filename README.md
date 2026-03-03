@@ -1,5 +1,7 @@
 ## Multi-Agent Teaching Studio
 
+![](./demo.png)
+
 A sophisticated educational platform powered by Agentic Tool Use and Multi-Agent Orchestration. This studio simulates a classroom environment where specialized AI agents collaborate to provide personalized learning experiences with integrated voice synthesis.
 
 ## Key Features
