@@ -53,7 +53,7 @@ async def run_conversation(request:ConversationRequest):
             )
            
             messages.append(AgentMessage(role="teacher", content=teacher_text))
-            conversation_history.append({"role":"assistant", "content": f"Teacher:{teacher_text}"})
+            conversation_history.append({"role": "assistant", "content": teacher_text})
 
             #Student responds
             student_text = await student_respond(
@@ -64,7 +64,7 @@ async def run_conversation(request:ConversationRequest):
             )
 
             messages.append(AgentMessage(role="student", content=student_text))
-            conversation_history.append({"role":"user", "content": f"Student:{student_text}"})
+            conversation_history.append({"role":"user", "content":student_text})
 
             # Call orchestrator
             routing = await orchestrate(conversation_history, request.student_level)
