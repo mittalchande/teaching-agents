@@ -8,8 +8,6 @@ def search_wikipedia(topic: str) -> str:
 
     page = wiki.page(topic)
 
-    print(page)
-
     if not page.exists():
         return "No wikipedia article found for this topic."
     

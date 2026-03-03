@@ -71,15 +71,14 @@ async def run_conversation(request:ConversationRequest):
             decision = routing["decision"]
             hint = routing["hint"]
             orchestrator_hint = hint
-            print(f"Orchestrator decision: {decision} | Hint: {hint}")
             orchestrator_decisions.append(OrchestratorDecision(decision=decision,hint=orchestrator_hint,turn=turn +1))
 
 
             # Generate audio clips for both teacher and student
             if request.with_audio:
                 teacher_audio, student_audio = await asyncio.gather(
-                    text_to_speech_b64(text=teacher_text, voice_id=TEACHER_VOICE_ID),
-                    text_to_speech_b64(text=student_text, voice_id=STUDENT_VOICE_ID)
+                    text_to_speech_b64(text=teacher_text, voice=TEACHER_VOICE_ID),
+                    text_to_speech_b64(text=student_text, voice=STUDENT_VOICE_ID)
                 )
 
                 audio_clips.extend([teacher_audio, student_audio])
