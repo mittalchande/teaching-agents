@@ -23,8 +23,8 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-TEACHER_VOICE_ID = os.getenv("TEACHER_VOICE_ID")
-STUDENT_VOICE_ID = os.getenv("STUDENT_VOICE_ID")
+TEACHER_VOICE_ID = os.getenv("TEACHER_VOICE_ID", "nova")   # fallback to nova
+STUDENT_VOICE_ID = os.getenv("STUDENT_VOICE_ID", "echo")   # fallback to echo
 
 @app.get("/health")
 async def health_check():
